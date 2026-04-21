@@ -4,6 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>21-day reprogramming: find joy in AI</title>
+<script>
+  (function () {
+    try {
+      var saved = localStorage.getItem("reprogramming21-theme");
+      var theme = saved || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      document.documentElement.setAttribute("data-theme", theme);
+    } catch (e) {
+      document.documentElement.setAttribute("data-theme", "light");
+    }
+  })();
+</script>
 <style>
   * {
     box-sizing: border-box;
@@ -23,6 +34,20 @@
     --shadow: rgba(26, 26, 26, 0.08);
   }
 
+  [data-theme="dark"] {
+    --ink: #ede6d6;
+    --ink-soft: #b8ae98;
+    --ink-faint: #7a7260;
+    --paper: #16130e;
+    --paper-warm: #1f1b14;
+    --rule: #3a3428;
+    --accent: #e06a3d;
+    --accent-soft: #d18866;
+    --gold: #d4a866;
+    --complete: #8aac6a;
+    --shadow: rgba(0, 0, 0, 0.35);
+  }
+
   html, body {
     margin: 0;
     padding: 0;
@@ -32,6 +57,7 @@
     font-weight: 300;
     line-height: 1.6;
     min-height: 100vh;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 
   body::before {
@@ -69,6 +95,31 @@
 
   .masthead .vol {
     color: var(--ink-soft);
+  }
+
+  .masthead-right {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+
+  .theme-toggle {
+    background: transparent;
+    border: 1px solid var(--ink);
+    color: var(--ink);
+    padding: 5px 12px;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 500;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  }
+
+  .theme-toggle:hover {
+    background: var(--ink);
+    color: var(--paper);
   }
 
   .hero {
@@ -575,7 +626,10 @@
 
     <div class="masthead">
       <span>Rewire &middot; Reclaim &middot; Rejoice</span>
-      <span class="vol">Vol. I / 21 days</span>
+      <div class="masthead-right">
+        <span class="vol">Vol. I / 21 days</span>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle color theme">Dark</button>
+      </div>
     </div>
 
     <section class="hero">
@@ -1143,7 +1197,23 @@
 
 <script type="module">
 const STORAGE_KEY = "reprogramming21";
+const THEME_KEY = "reprogramming21-theme";
 const TOTAL_DAYS = 21;
+
+function applyTheme(theme) {
+  document.documentElement.setAttribute("data-theme", theme);
+  const btn = document.getElementById("themeToggle");
+  if (btn) btn.textContent = theme === "dark" ? "Light" : "Dark";
+}
+
+applyTheme(document.documentElement.getAttribute("data-theme") || "light");
+
+document.getElementById("themeToggle").addEventListener("click", () => {
+  const current = document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
+  const next = current === "dark" ? "light" : "dark";
+  try { localStorage.setItem(THEME_KEY, next); } catch {}
+  applyTheme(next);
+});
 
 function loadState() {
   try {

@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>21-day reprogramming: find joy in AI</title>
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  :root {
+    --ink: #1a1a1a;
+    --ink-soft: #4a4a4a;
+    --ink-faint: #8a8a8a;
+    --paper: #f4f0e8;
+    --paper-warm: #ede6d6;
+    --rule: #d4cdba;
+    --accent: #c24e1f;
+    --accent-soft: #e8a98e;
+    --gold: #b8924a;
+    --complete: #6b8e4e;
+    --shadow: rgba(26, 26, 26, 0.08);
+  }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: 300;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image: radial-gradient(circle at 20% 30%, rgba(194, 78, 31, 0.04) 0%, transparent 50%),
+                      radial-gradient(circle at 80% 70%, rgba(184, 146, 74, 0.04) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 80px 40px 120px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Header */
+  .masthead {
+    border-top: 2px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+    padding: 14px 0;
+    margin-bottom: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-weight: 400;
+  }
+
+  .masthead .vol {
+    color: var(--ink-soft);
+  }
+
+  .hero {
+    margin-bottom: 80px;
+    position: relative;
+  }
+
+  .hero .eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 24px;
+    font-weight: 500;
+  }
+
+  .hero h1 {
+    font-family: "Helvetica Neue", Helvetica, sans-serif;
+    font-size: clamp(44px, 7vw, 88px);
+    font-weight: 200;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    margin: 0 0 32px;
+    color: var(--ink);
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    font-weight: 300;
+    color: var(--accent);
+  }
+
+  .hero .lede {
+    font-size: 19px;
+    line-height: 1.55;
+    max-width: 620px;
+    color: var(--ink-soft);
+    font-weight: 300;
+    border-left: 2px solid var(--accent);
+    padding-left: 20px;
+    margin: 0;
+  }
+
+  /* Science section */
+  .science {
+    background: var(--paper-warm);
+    border: 1px solid var(--rule);
+    padding: 40px;
+    margin-bottom: 60px;
+    position: relative;
+  }
+
+  .science::before {
+    content: "01";
+    position: absolute;
+    top: -14px;
+    left: 24px;
+    background: var(--paper);
+    padding: 0 10px;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--ink-faint);
+    font-weight: 500;
+  }
+
+  .science.how-to::before {
+    content: "02";
+  }
+
+  .science h2 {
+    font-size: 22px;
+    font-weight: 400;
+    margin: 0 0 20px;
+    letter-spacing: -0.01em;
+  }
+
+  .science p {
+    font-size: 15px;
+    color: var(--ink-soft);
+    margin: 0 0 14px;
+  }
+
+  .science .principles {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 24px;
+    margin-top: 28px;
+    padding-top: 28px;
+    border-top: 1px dashed var(--rule);
+  }
+
+  .principle .num {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+
+  .principle .name {
+    font-size: 15px;
+    font-weight: 500;
+    margin-bottom: 6px;
+  }
+
+  .principle .desc {
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
+
+  /* Progress tracker */
+  .tracker {
+    margin-bottom: 60px;
+  }
+
+  .tracker-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 20px;
+  }
+
+  .tracker-head h2 {
+    font-size: 13px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 500;
+    margin: 0;
+  }
+
+  .tracker-head .count {
+    font-size: 12px;
+    color: var(--ink-faint);
+    letter-spacing: 0.1em;
+  }
+
+  .progress-bar {
+    height: 2px;
+    background: var(--rule);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    width: 0%;
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .dot-grid {
+    display: grid;
+    grid-template-columns: repeat(21, 1fr);
+    gap: 6px;
+    margin-top: 20px;
+  }
+
+  .dot {
+    aspect-ratio: 1;
+    border: 1px solid var(--rule);
+    border-radius: 50%;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    padding: 0;
+    font-size: 9px;
+    color: var(--ink-faint);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: inherit;
+  }
+
+  .dot:hover {
+    border-color: var(--ink);
+    color: var(--ink);
+  }
+
+  .dot.complete {
+    background: var(--complete);
+    border-color: var(--complete);
+    color: var(--paper);
+  }
+
+  .dot.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--paper);
+  }
+
+  /* Phase divider */
+  .phase {
+    margin: 60px 0 32px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .phase .line {
+    flex: 1;
+    height: 1px;
+    background: var(--rule);
+  }
+
+  .phase .label {
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  .phase .subtitle {
+    font-size: 13px;
+    color: var(--ink-faint);
+    font-style: italic;
+  }
+
+  /* Day card */
+  .day {
+    border-top: 1px solid var(--rule);
+    padding: 36px 0;
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 40px;
+    position: relative;
+    transition: opacity 0.3s ease;
+  }
+
+  .day:last-of-type {
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .day.done {
+    opacity: 0.55;
+  }
+
+  .day-num {
+    font-size: 56px;
+    font-weight: 200;
+    line-height: 0.9;
+    color: var(--ink);
+    letter-spacing: -0.03em;
+  }
+
+  .day-num .label {
+    display: block;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-top: 8px;
+    font-weight: 500;
+  }
+
+  .day-body h3 {
+    font-size: 24px;
+    font-weight: 400;
+    margin: 0 0 6px;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+  }
+
+  .day-body .theme {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+    font-weight: 500;
+  }
+
+  .day-body .intro {
+    font-size: 15px;
+    color: var(--ink-soft);
+    margin: 0 0 24px;
+    line-height: 1.65;
+  }
+
+  .practices {
+    background: var(--paper-warm);
+    padding: 24px 28px;
+    margin-bottom: 20px;
+    border-left: 2px solid var(--accent);
+  }
+
+  .practices .ptitle {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 14px;
+    font-weight: 500;
+  }
+
+  .practices ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .practices li {
+    font-size: 14.5px;
+    color: var(--ink);
+    padding: 8px 0 8px 24px;
+    position: relative;
+    line-height: 1.55;
+    border-bottom: 1px dashed var(--rule);
+  }
+
+  .practices li:last-child {
+    border-bottom: none;
+  }
+
+  .practices li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 400;
+  }
+
+  .affirmation {
+    padding: 20px 0 4px;
+    font-style: italic;
+    font-size: 16px;
+    color: var(--ink);
+    line-height: 1.5;
+    border-top: 1px dashed var(--rule);
+    padding-top: 20px;
+  }
+
+  .affirmation::before {
+    content: "Affirmation. ";
+    font-style: normal;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 500;
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .mark-done {
+    margin-top: 24px;
+    background: transparent;
+    border: 1px solid var(--ink);
+    color: var(--ink);
+    padding: 10px 24px;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 500;
+    transition: all 0.2s ease;
+  }
+
+  .mark-done:hover {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  .mark-done.done {
+    background: var(--complete);
+    border-color: var(--complete);
+    color: var(--paper);
+  }
+
+  /* Journal */
+  .journal {
+    margin-top: 20px;
+  }
+
+  .journal label {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 500;
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  .journal textarea {
+    width: 100%;
+    min-height: 70px;
+    background: transparent;
+    border: 1px solid var(--rule);
+    padding: 14px;
+    font-family: inherit;
+    font-size: 16px;
+    color: var(--ink);
+    resize: vertical;
+    line-height: 1.5;
+  }
+
+  .journal textarea:focus {
+    outline: none;
+    border-color: var(--ink);
+  }
+
+  /* Closing */
+  .closing {
+    margin-top: 100px;
+    padding: 60px 40px;
+    background: var(--ink);
+    color: var(--paper);
+    text-align: center;
+    position: relative;
+  }
+
+  .closing h2 {
+    font-size: clamp(32px, 5vw, 48px);
+    font-weight: 200;
+    margin: 0 0 20px;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+
+  .closing h2 em {
+    color: var(--accent-soft);
+    font-style: italic;
+  }
+
+  .closing p {
+    font-size: 15px;
+    color: rgba(244, 240, 232, 0.75);
+    max-width: 520px;
+    margin: 0 auto;
+    line-height: 1.65;
+  }
+
+  .reset {
+    margin-top: 32px;
+    background: transparent;
+    border: 1px solid var(--paper);
+    color: var(--paper);
+    padding: 12px 28px;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 500;
+    transition: all 0.2s ease;
+  }
+
+  .reset:hover {
+    background: var(--paper);
+    color: var(--ink);
+  }
+
+  /* Footer */
+  footer {
+    margin-top: 80px;
+    padding-top: 24px;
+    border-top: 1px solid var(--rule);
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--ink-faint);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    .page {
+      padding: 40px 20px 80px;
+    }
+
+    .day {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .day-num {
+      font-size: 40px;
+    }
+
+    .science {
+      padding: 28px 20px;
+    }
+
+    .principles {
+      grid-template-columns: 1fr;
+    }
+
+    .dot-grid {
+      grid-template-columns: repeat(7, 1fr);
+    }
+
+    .closing {
+      padding: 40px 24px;
+    }
+  }
+</style>
+</head>
+<body>
+  <main class="page">
+
+    <div class="masthead">
+      <span>Rewire &middot; Reclaim &middot; Rejoice</span>
+      <span class="vol">Vol. I / 21 days</span>
+    </div>
+
+    <section class="hero">
+      <div class="eyebrow">A subconscious reprogramming guide</div>
+      <h1>Find <em>joy</em> in the machines<br>you were afraid of.</h1>
+      <p class="lede">
+        Twenty-one days to dissolve the quiet dread around AI and replace it with genuine curiosity. Not hustle. Not hype. Just the honest work of retraining the mind that got you here so it can carry you somewhere new.
+      </p>
+    </section>
+
+    <section class="science">
+      <h2>Why twenty-one days, and why this works</h2>
+      <p>
+        The brain is not a fixed machine. Through neuroplasticity, every repeated thought physically reshapes neural pathways. Resistance to AI is rarely about the technology. It is a protective pattern &mdash; a subconscious belief that change equals loss. This guide uses five evidence-based levers to rewrite that pattern gently, from the inside out.
+      </p>
+
+      <div class="principles">
+        <div class="principle">
+          <div class="num">I.</div>
+          <div class="name">Hebbian learning</div>
+          <div class="desc">Neurons that fire together, wire together. Small daily reps outperform marathon sessions.</div>
+        </div>
+        <div class="principle">
+          <div class="num">II.</div>
+          <div class="name">Priming</div>
+          <div class="desc">Affirmations spoken in the first twenty minutes of waking seed the subconscious for the day.</div>
+        </div>
+        <div class="principle">
+          <div class="num">III.</div>
+          <div class="name">Mental contrast</div>
+          <div class="desc">Pairing a vivid future vision with today's obstacle builds motivation that survives friction.</div>
+        </div>
+        <div class="principle">
+          <div class="num">IV.</div>
+          <div class="name">Embodied cognition</div>
+          <div class="desc">Posture, breath, and movement encode belief into the body, not just the mind.</div>
+        </div>
+        <div class="principle">
+          <div class="num">V.</div>
+          <div class="name">Dopamine stacking</div>
+          <div class="desc">Tiny celebrated wins flood the reward system, turning effort into a feedback loop you want to repeat.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="science how-to">
+      <h2>How to use this guide</h2>
+      <p>
+        This is not a course to binge. It is a daily rewiring practice. Each day takes between ten and forty-five minutes and is designed to be done in order &mdash; the sequence itself is part of how the subconscious updates.
+      </p>
+
+      <div class="principles">
+        <div class="principle">
+          <div class="num">I.</div>
+          <div class="name">One day at a time</div>
+          <div class="desc">Do today's practice today. Resist jumping ahead. The brain needs sleep between reps to consolidate.</div>
+        </div>
+        <div class="principle">
+          <div class="num">II.</div>
+          <div class="name">Morning works best</div>
+          <div class="desc">Read the affirmation in the first twenty minutes after waking. That is when the subconscious is most porous.</div>
+        </div>
+        <div class="principle">
+          <div class="num">III.</div>
+          <div class="name">Write by hand if you can</div>
+          <div class="desc">Handwriting engages more neural regions than typing. The textarea is a backup, not the ideal.</div>
+        </div>
+        <div class="principle">
+          <div class="num">IV.</div>
+          <div class="name">Missed a day? Continue</div>
+          <div class="desc">Do not restart. Do not punish. Pick up where you left off. The practice is imperfect and repeated, not perfect and rare.</div>
+        </div>
+        <div class="principle">
+          <div class="num">V.</div>
+          <div class="name">Track it, feel it</div>
+          <div class="desc">Mark each day complete below. Use the reflection box. Your progress saves locally in your browser, so return anytime.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="tracker">
+      <div class="tracker-head">
+        <h2>Your progress</h2>
+        <span class="count" id="count">0 of 21 days complete</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <div class="dot-grid" id="dotGrid"></div>
+    </section>
+
+    <div class="phase">
+      <span class="label">Week one</span>
+      <span class="subtitle">Unlearning fear</span>
+      <span class="line"></span>
+    </div>
+
+    <article class="day" data-day="1">
+      <div class="day-num">01<span class="label">Awareness</span></div>
+      <div class="day-body">
+        <h3>Name the story you've been telling yourself</h3>
+        <div class="theme">Limiting belief audit</div>
+        <p class="intro">
+          Reprogramming begins with visibility. You cannot rewrite code you cannot read. Today you surface the exact sentences running in the background whenever AI comes up.
+        </p>
+        <div class="practices">
+          <div class="ptitle">Today's practice &mdash; 15 minutes</div>
+          <ul>
+            <li>Write down three sentences that finish "AI makes me feel..." Do not edit.</li>
+            <li>Underline the word with the most charge. That is the root belief.</li>
+            <li>Ask: "Whose voice does this sound like? When did I first hear it?"</li>
+            <li>Place a hand on your chest and breathe for sixty seconds without fixing anything.</li>
+          </ul>
+        </div>
+        <div class="affirmation">I have permission to see my thoughts without judgment. Awareness is the first act of change.</div>
+      </div>
+    </article>
+
+    <article class="day" data-day="2">
+      <div class="day-num">02<span class="label">Reframe</span></div>
+      <div class="day-body">
+        <h3>Replace "replace" with "amplify"</h3>
+        <div class="theme">Cognitive reframing</div>
+        <p class="intro">
+          The fear that AI will replace you is built on a scarcity frame. Today you practice the opposite frame until it starts to feel plausible in your body &mdash; not just your head.
+        </p>
+        <div class="practices">
+          <div class="ptitle">Today's practice &mdash; 10 minutes</div>
+          <ul>
+            <li>Write: "AI is here to replace me." Read it aloud. Notice where you feel it.</li>
+            <li>Cross it out. Write: "AI is here to amplify what only I can do."</li>
+            <li>List three things only you bring: taste, context, relationships, lived experience.</li>
+            <li>Say the new sentence aloud three times, slowly, with breath between each.</li>
+          </ul>
+        </div>
+        <div class="affirmation">My humanity is not a weakness in this new world. It is the signal.</div>
+      </div>
+    </article>
+
+    <article class="day" data-day="3">
+      <div class="day-num">03<span class="label">Body</span></div>
+      <div class="day-body">
+        <h3>Regulate the nervous system first</h3>
+        <div class="theme">Somatic grounding</div>
+        <p class="intro">
+          A dysregulated body cannot learn. If AI triggers a subtle fight-or-flight response, no amount of affirmation will stick. Today you teach your body that this topic is safe.
+        </p>
+        <div class="practices">
+          <div class="ptitle">Today's practice &mdash; 8 minutes</div>
+          <ul>
+            <li>Do a four-seven-eight breath cycle: inhale four, hold seven, exhale eight. Repeat four times.</li>
+            <li>Open any AI tool. Before typing, place both feet flat on the floor.</li>
+            <li>Type one low-stakes prompt: "Recommend a book for someone who loves [your favorite genre]."</li>
+            <li>Read the reply. Notice your shoulders. If they dropped, you are regulating.</li>
+          </ul>
+        </div>
+        <div class="affirmation">My body is safe. My breath is steady. I can be curious and calm at the same time.</div>
+      </div>
+    </article>
+
+    <article class="day" data-day="4">
+      <div class="day-num">04<span class="label">Vision</span></div>
+      <div class="day-body">
+        <h3>Write from the future self</h3>
+        <div class="theme">Mental contrasting</div>
+        <p class="intro">
+          The subconscious moves toward vivid images, not abstract goals. Today you meet the version of yourself who already finds this easy, and let her write you a letter.
+        </p>
+        <div class="practices">
+          <div class="ptitle">Today's practice &mdash; 20 minutes</div>
+          <ul>
+            <li>Close your eyes. Picture yourself one year from now, confidently using AI in your work.</li>
+            <li>What is she wearing? What is on her screen? How does her Monday morning feel?</li>
+            <li>Open your eyes and write a letter from her to today-you. Start with: "I want you to know..."</li>
+            <li>End with the single sentence of advice she most wants you to hear.</li>
+          </ul>
+        </div>
+        <div class="affirmation">The version of me I am becoming is already reaching back to help me arrive.</div>
+      </div>
+    </article>
+
+    <article class="day" data-day="5">
+      <div class="day-num">05<span class="label">Identity</span></div>
+      <div class="day-body">
+        <h3>Shift from "I'm not a tech person" to "I'm becoming"</h3>
+        <div class="theme">Identity-based habits</div>
+        <p class="intro">
+          James Clear's insight: behaviors rooted in identity last. You are not trying to learn AI. You are becoming someone for whom learning AI is a natural expression of who she is.
+        </p>
+        <div class="practices">
+          <div class="ptitle">Today's practice &mdash; 12 minutes</div>
+          <ul>
+            <li>Write ten sentences starting with "I am someone who..." &mdash; traits you admire in yourself.</li>
+            <li>Add three more: "I am someone who is curious about how things work," "I am someone who grows," "I am someone who uses modern tools."</li>
+            <li>Read all thirteen aloud. Notice which ones already feel true.</li>
+            <li>Pick one new identity statement to carry through the day.</li>
+          </ul>
+        </div>
+        <div class="affirmation">I am someone who learns. Learning is not foreign to me &mdash; it is who I have always been.</div>
+      </div>
+    </article>
+
+    <article class="day" data-day="6">
+      <div class="day-num">06<span class="label">Play</span></div>
+      <div class="day-body">
+        <h3>Use AI for something completely useless</h3>
+        <div class="theme">Playful exposure</div>
+        <p class="intro">
+          Productivity is the wrong on-ramp. Joy comes through play. Today you use AI for zero serious purpose &mdash; just to remember that curiosity feels good.
+        </p>
+        <div class="practices">
+          <div class="ptitle">Today's practice &mdash; 15 minutes</div>
+          <ul>
+            <li>Ask an AI to write a haiku about your pet, your houseplant, or your favorite snack.</li>
+            <li>Ask it to roast your last three grocery purchases. Laugh.</li>
+            <li>Ask it to plan an absurd dinner party with three historical figures you would love to meet.</li>
+            <li>Notice: you just had fun with AI. Your brain is now encoding this as safe.</li>
+          </ul>
+        </div>
+        <div class="affirmation">I am allowed to be delighted. Play is how the subconscious learns fastest.</div>
+      </div>
+    </article>
+
+    <article class="day" data-day="7">
+      <div class="day-num">07<span class="label">Integrate</span></div>
+      <div class="day-body">
+        <h3>Week one review</h3>
+        <div class="theme">Reflection and anchoring</div>
+        <p class="intro">
+          Neuroscience calls this memory consolidation. When you pause to notice change, you double its staying power. You have already begun to rewire. Let the nervous system register the evidence.
+        </p>
+        <div class="practices">
+          <div class="ptitle">Today's practice &mdash; 20 minutes</div>
+          <ul>
+            <li>Re-read your writing from days one through six.</li>
+            <li>Answer: What feels different in my body when I think about AI now?</li>
+            <li>Answer: What is one surprise I did not expect?</li>
+            <li>Celebrate concretely. Something small: a favorite meal, a walk, music.</li>
+          </ul>
+        </div>
+        <div class="affirmation">I have already changed. I can feel it. The work is working.</div>
+      </div>
+    </article>
+
+    <div class="phase">
+      <span class="label">Week two</span>
+      <span class="subtitle">Building skill</span>
+      <span class="line"></span>
+    </div>
+
+    <article class="day" data-day="8">
+      <div class="day-num">08<span class="label">Apprentice</span></div>
+      <div class="day-body">
+        <h3>Pick one tool. Only one.</h3>
+        <div class="theme">Focused depth</div>
+        <p class="intro">
+          Overwhelm is a fear response dressed up as research. Today you end the survey and marry one tool for the next two weeks. Depth beats breadth every single time.
+        </p>
+        <div class="practices">
+          <div class="ptitle">Today's practice &mdash; 25 minutes</div>
+          <ul>
+            <li>Choose one AI tool relevant to your work &mdash; Claude, ChatGPT, a design tool, whatever.</li>
+            <li>Bookmark it. Pin the tab. Put the app on your home screen.</li>
+            <li>Spend twenty minutes reading its official getting-started guide. No other sources.</li>
+            <li>Write one sentence: "For the next fourteen days, this tool and I are learning each other."</li>
+          </ul>
+        </div>
+        <div class="affirmation">I choose depth over scatter. One tool, deeply known, outperforms ten tools half-understood.</div>
+      </div>
+    </article>
+
+    <article class="day" data-day="9">
+      <div class="day-num">09<span class="label">Practice</span></div>
+      <div class="day-body">
+        <h3>Solve one small real problem</h3>
+        <div class="theme">Embodied skill</div>
+        <p class="intro">
+          Skill lives in the doing, not the knowing. Today you use your chosen tool for a genuine annoyance in your life. Small. Stakes low. Win guaranteed.
+        </p>
+        <div class="practices">
+          <div class="ptitle">Today's practice &mdash; 30 minutes</div>
+          <ul>
+            <li>Name one small task you have been putting off: an email, a meal plan, a packing list.</li>
+            <li>Ask your AI tool to draft a first version.</li>
+            <li>Edit it into your voice. Ship it.</li>
+            <li>Notice: the task is done and it did not consume your whole afternoon.</li>
+          </ul>
+        </div>
+        <div class="affirmation">Action creates competence. I learn by doing, not by preparing to do.</div>
+      </div>
+    </article>
+
+    <article class="day" data-day="10">
+      <div class="day-num">10<span class="label">Prompting</span></div>
+      <div class="day-body">
+        <h3>Learn to talk to it like a collaborator</h3>
+        <div class="theme">Communication as craft</div>
+        <p class="intro">
+          Prompting is not technical. It is communication. If you can brief a new hire, you can prompt an AI. Today you practice the one pattern that unlocks ninety percent of better results.
+        </p>
+        <div class="practices">
+          <div class="ptitle">Today's practice &mdash; 20 minutes</div>
+          <ul>
+            <li>Learn the pattern: role, context, task, constraints, format.</li>
+            <li>Try it: "You are a [role]. I am [context]. Help me [task]. Keep it under [constraint]. Format as [format]."</li>
+            <li>Run the same question with and without the pattern. Compare.</li>
+            <li>Save your three favorite prompts in a note. This is your new prompt library.</li>
+          </ul>
+        </div>
+        <div class="affirmation">I am a clear communicator. That is already the skill. I am only extending it to a new listener.</div>
+      </div>
+    </article>
+
+    <article class="day" data-day="11">
+      <div class="day-num">11<span class="label">Edit</span></div>
+      <div class="day-body">
+        <h3>The AI drafts, you decide</h3>
+        <div class="theme">Taste as superpower</div>
+        <p class="intro">
+          Good output is not the goal. Good judgment is. Today you practice the role you were always meant to play &mdash; editor, curator, final eye. The AI is the intern. You are the director.
+        </p>
+        <div class="practices">
+          <div class="ptitle">Today's practice &mdash; 25 minutes</div>
+          <ul>
+            <li>Ask AI for five versions of something: a subject line, an intro, a paragraph.</li>
+            <li>Reject four. Keep one. Articulate why in a single sentence.</li>
+            <li>Edit the keeper until it sounds unmistakably like you.</li>
+            <li>Notice: you just exercised taste. That is the irreplaceable part of you.</li>
+          </ul>
+        </div>
+        <div class="affirmation">My taste, my context, my judgment &mdash; these are the parts of me the machines cannot replicate.</div>
+      </div>
+    </article>
+
+    <article class="day" data-day="12">
+      <div class="day-num">12<span class="label">Teach</span></div>
+      <div class="day-body">
+        <h3>Explain what you learned to one person</h3>
+        <div class="theme">Protege effect</div>
+        <p class="intro">
+          The fastest way to own knowledge is to teach it. When you explain, the brain reorganizes. Today you become someone who explains AI, not someone who is confused by it.
+        </p>
+        <div class="practices">
+          <div class="ptitle">Today's practice &mdash; 15 minutes</div>
+          <ul>
+            <li>Text or call one person. A friend, a parent, a colleague.</li>
+            <li>Say: "I have been learning about AI. Let me show you something cool."</li>
+            <li>Demonstrate one thing your chosen tool does well. Two minutes, max.</li>
+            <li>Notice: you just became the person who shows others. That is identity shift.</li>
+          </ul>
+        </div>
+        <div class="affirmation">I am now the one who explains. That role belongs to me.</div>
+      </div>
+    </article>
+
+    <article class="day" data-day="13">
+      <div class="day-num">13<span class="label">Friction</span></div>
+      <div class="day-body">
+        <h3>Meet the first real frustration</h3>
+        <div class="theme">Resilient reframing</div>
+        <p class="intro">
+          By now, something has gone wrong. A prompt flopped. An output was bad. The old voice whispered, "See, I told you." Today you meet that voice and choose differently.
+        </p>
+        <div class="practices">
+          <div class="ptitle">Today's practice &mdash; 15 minutes</div>
+          <ul>
+            <li>Write down the most frustrating moment with AI this week.</li>
+            <li>Complete: "The old me would have quit here because..."</li>
+            <li>Complete: "The new me sees this as..."</li>
+            <li>Take the same task back to the AI with one changed variable. Observe.</li>
+          </ul>
+        </div>
+        <div class="affirmation">Friction is feedback, not failure. Every stuck moment is information about the next move.</div>
+      </div>
+    </article>
+
+    <article class="day" data-day="14">
+      <div class="day-num">14<span class="label">Anchor</span></div>
+      <div class="day-body">
+        <h3>Week two review</h3>
+        <div class="theme">Memory consolidation</div>
+        <p class="intro">
+          Two weeks in. You are no longer the person who started. Take inventory, honor the shift, and set the direction for the final stretch.
+        </p>
+        <div class="practices">
+          <div class="ptitle">Today's practice &mdash; 25 minutes</div>
+          <ul>
+            <li>List five things you can now do with AI that you could not do two weeks ago.</li>
+            <li>Re-read your letter from your future self on day four. Which parts are already true?</li>
+            <li>Write your new prompt library somewhere permanent.</li>
+            <li>Celebrate again. Loudly, quietly &mdash; however you celebrate.</li>
+          </ul>
+        </div>
+        <div class="affirmation">I am halfway and already different. The change is not hypothetical. It is here.</div>
+      </div>
+    </article>
+
+    <div class="phase">
+      <span class="label">Week three</span>
+      <span class="subtitle">Becoming</span>
+      <span class="line"></span>
+    </div>
+
+    <article class="day" data-day="15">
+      <div class="day-num">15<span class="label">Workflow</span></div>
+      <div class="day-body">
+        <h3>Rebuild one part of your day around AI</h3>
+        <div class="theme">Habit architecture</div>
+        <p class="intro">
+          Knowledge without workflow evaporates. Today you pick one recurring part of your week and redesign it so AI is no longer optional &mdash; it is built into the path of least resistance.
+        </p>
+        <div class="practices">
+          <div class="ptitle">Today's practice &mdash; 30 minutes</div>
+          <ul>
+            <li>Pick a recurring task: Monday planning, weekly reports, email triage, meal prep.</li>
+            <li>Design a three-step version that includes AI as step two.</li>
+            <li>Write it on a sticky note. Put it where you will see it Monday morning.</li>
+            <li>Promise yourself you will run it three times before judging it.</li>
+          </ul>
+        </div>
+        <div class="affirmation">I shape my environment, and my environment shapes me. I build the path I want to walk.</div>
+      </div>
+    </article>
+
+    <article class="day" data-day="16">
+      <div class="day-num">16<span class="label">Creative</span></div>
+      <div class="day-body">
+        <h3>Make something with AI that is purely yours</h3>
+        <div class="theme">Co-creation</div>
+        <p class="intro">
+          The deepest shift comes when AI stops being a threat and becomes a creative partner. Today you make one small thing that would not exist without both of you.
+        </p>
+        <div class="practices">
+          <div class="ptitle">Today's practice &mdash; 45 minutes</div>
+          <ul>
+            <li>Pick a creative form you love: a poem, a recipe, a playlist concept, a design idea.</li>
+            <li>Use AI to brainstorm ten variations. Be opinionated. Reject nine.</li>
+            <li>Finish the tenth entirely yourself. Make it unmistakably yours.</li>
+            <li>Share it with one person or keep it private. Either way &mdash; you made something new.</li>
+          </ul>
+        </div>
+        <div class="affirmation">I am a creator who uses new instruments. The instrument does not make the music. I do.</div>
+      </div>
+    </article>
+
+    <article class="day" data-day="17">
+      <div class="day-num">17<span class="label">Limits</span></div>
+      <div class="day-body">
+        <h3>Notice where AI fails &mdash; and why that's good news</h3>
+        <div class="theme">Healthy discernment</div>
+        <p class="intro">
+          The confident user sees the edges clearly. Joy in AI does not mean blind trust. It means knowing exactly where the tool stops and you begin. That boundary is where your value lives.
+        </p>
+        <div class="practices">
+          <div class="ptitle">Today's practice &mdash; 20 minutes</div>
+          <ul>
+            <li>List three things AI gets wrong or flat for you: nuance, current events, your specific industry.</li>
+            <li>Next to each, write what you bring to fill the gap.</li>
+            <li>Recognize: the gaps are not problems. They are your job security and your meaning.</li>
+            <li>Keep this list near your desk.</li>
+          </ul>
+        </div>
+        <div class="affirmation">I am clear about what AI is for and what it is not for. That clarity is power.</div>
+      </div>
+    </article>
+
+    <article class="day" data-day="18">
+      <div class="day-num">18<span class="label">Community</span></div>
+      <div class="day-body">
+        <h3>Find your people</h3>
+        <div class="theme">Social proof</div>
+        <p class="intro">
+          Identity is maintained in community. If everyone around you still says "I'm not a tech person," you will drift back. Today you find at least one voice who is already where you are going.
+        </p>
+        <div class="practices">
+          <div class="ptitle">Today's practice &mdash; 20 minutes</div>
+          <ul>
+            <li>Follow three people online who use AI thoughtfully in a field you care about.</li>
+            <li>Join one newsletter, community, or group. Just one.</li>
+            <li>Comment or reply once. Break the lurker pattern.</li>
+            <li>Your algorithm will now quietly reinforce your new identity.</li>
+          </ul>
+        </div>
+        <div class="affirmation">I surround myself with the future I am choosing. I am not alone in this shift.</div>
+      </div>
+    </article>
+
+    <article class="day" data-day="19">
+      <div class="day-num">19<span class="label">Wealth</span></div>
+      <div class="day-body">
+        <h3>Ask: how does this make me more valuable?</h3>
+        <div class="theme">Abundance frame</div>
+        <p class="intro">
+          Fear asks, "Will AI take my job?" Confidence asks, "How does AI make me worth more?" Today you shift the question &mdash; and let your subconscious start hunting for answers.
+        </p>
+        <div class="practices">
+          <div class="ptitle">Today's practice &mdash; 20 minutes</div>
+          <ul>
+            <li>Write: "With AI on my team, I can now offer..." and list five things.</li>
+            <li>Write: "This makes me more valuable because..." and list three reasons.</li>
+            <li>Pick one thing from the list and send it to someone who needs it &mdash; a colleague, client, friend.</li>
+            <li>Notice: leverage is not theoretical. You just used it.</li>
+          </ul>
+        </div>
+        <div class="affirmation">AI multiplies me. I am more, not less, because of this tool.</div>
+      </div>
+    </article>
+
+    <article class="day" data-day="20">
+      <div class="day-num">20<span class="label">Ritual</span></div>
+      <div class="day-body">
+        <h3>Design the practice you'll keep after day twenty-one</h3>
+        <div class="theme">Sustained transformation</div>
+        <p class="intro">
+          The guide ends tomorrow. The practice does not. Today you design the five-minute ritual that will carry this work into the rest of your life, so none of it decays.
+        </p>
+        <div class="practices">
+          <div class="ptitle">Today's practice &mdash; 15 minutes</div>
+          <ul>
+            <li>Pick one morning affirmation from these twenty days to keep. Write it on a card.</li>
+            <li>Pick one tool and one workflow. These are your anchor points.</li>
+            <li>Commit: fifteen minutes, three times a week, for the next month. Schedule it now.</li>
+            <li>Decide what you will do on day thirty to celebrate.</li>
+          </ul>
+        </div>
+        <div class="affirmation">This is not a project I finish. This is the way I move now.</div>
+      </div>
+    </article>
+
+    <article class="day" data-day="21">
+      <div class="day-num">21<span class="label">Arrive</span></div>
+      <div class="day-body">
+        <h3>Recognize who you've become</h3>
+        <div class="theme">Integration</div>
+        <p class="intro">
+          Twenty-one days ago, you were someone AI made nervous. Today you are someone AI makes curious. That is not a small thing. That is a rewiring. Honor it with the care it deserves.
+        </p>
+        <div class="practices">
+          <div class="ptitle">Today's practice &mdash; 40 minutes</div>
+          <ul>
+            <li>Re-read everything you've written. Every letter, every affirmation, every breakthrough.</li>
+            <li>Write a new letter &mdash; from today-you to the you who started on day one. Tell her what you know now.</li>
+            <li>Take an honest inventory of what has changed: in your thinking, your body, your work, your curiosity.</li>
+            <li>Celebrate fully. You did subconscious work most people will never attempt.</li>
+          </ul>
+        </div>
+        <div class="affirmation">I find joy in learning. I am excited for what is next. I trust myself in the age of AI &mdash; because I know exactly who I am inside of it.</div>
+      </div>
+    </article>
+
+    <section class="closing">
+      <h2>You did not just learn AI.<br><em>You rebuilt the person who uses it.</em></h2>
+      <p>
+        Keep your card visible. Keep your ritual alive. Return to this guide whenever fear tries to return too &mdash; because it will, and you now know exactly what to do.
+      </p>
+      <button class="reset" id="reset">Begin again</button>
+    </section>
+
+    <footer>
+      <span>Made with care</span>
+      <span>Day one begins today</span>
+    </footer>
+
+  </main>
+
+<script type="module">
+const STORAGE_KEY = "reprogramming21";
+const TOTAL_DAYS = 21;
+
+function loadState() {
+  try {
+    return JSON.parse(localStorage.getItem(STORAGE_KEY)) || { done: [], journal: {} };
+  } catch {
+    return { done: [], journal: {} };
+  }
+}
+
+function saveState(state) {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  } catch {}
+}
+
+let state = loadState();
+
+function render() {
+  const doneSet = new Set(state.done);
+  const count = doneSet.size;
+
+  document.getElementById("count").textContent = `${count} of ${TOTAL_DAYS} days complete`;
+  document.getElementById("progressFill").style.width = `${(count / TOTAL_DAYS) * 100}%`;
+
+  const grid = document.getElementById("dotGrid");
+  grid.innerHTML = "";
+  for (let i = 1; i <= TOTAL_DAYS; i++) {
+    const dot = document.createElement("button");
+    dot.className = "dot";
+    if (doneSet.has(i)) dot.classList.add("complete");
+    dot.textContent = i;
+    dot.setAttribute("aria-label", `Day ${i}`);
+    dot.addEventListener("click", () => {
+      const el = document.querySelector(`.day[data-day="${i}"]`);
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+    grid.appendChild(dot);
+  }
+
+  document.querySelectorAll(".day").forEach(day => {
+    const num = parseInt(day.dataset.day, 10);
+    const isDone = doneSet.has(num);
+    day.classList.toggle("done", isDone);
+
+    let btn = day.querySelector(".mark-done");
+    if (!btn) {
+      btn = document.createElement("button");
+      btn.className = "mark-done";
+      btn.addEventListener("click", () => toggleDay(num));
+      day.querySelector(".day-body").appendChild(btn);
+
+      const journalWrap = document.createElement("div");
+      journalWrap.className = "journal";
+      journalWrap.innerHTML = `
+        <label for="j${num}">Reflection (optional &mdash; saved locally)</label>
+        <textarea id="j${num}" placeholder="What did you notice today?"></textarea>
+      `;
+      day.querySelector(".day-body").appendChild(journalWrap);
+
+      const ta = journalWrap.querySelector("textarea");
+      ta.value = state.journal[num] || "";
+      ta.addEventListener("input", (e) => {
+        state.journal[num] = e.target.value;
+        saveState(state);
+      });
+    }
+
+    btn.textContent = isDone ? "Completed" : "Mark day complete";
+    btn.classList.toggle("done", isDone);
+  });
+}
+
+function toggleDay(num) {
+  const set = new Set(state.done);
+  if (set.has(num)) {
+    set.delete(num);
+  } else {
+    set.add(num);
+  }
+  state.done = Array.from(set).sort((a, b) => a - b);
+  saveState(state);
+  render();
+}
+
+document.getElementById("reset").addEventListener("click", () => {
+  if (confirm("Reset all progress and journal entries? This cannot be undone.")) {
+    state = { done: [], journal: {} };
+    saveState(state);
+    render();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+});
+
+render();
+</script>
+</body>
+</html>
